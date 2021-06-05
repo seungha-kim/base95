@@ -1,11 +1,57 @@
-pub mod digits;
+//! Textual representation of base 95 fractional numbers with arbitrary precision,
+//! intended to be used in real-time collaborative applications.
+//!
+//! It can only represent numbers between 0 and 1, exclusive.
+//! The leading `0.` is omitted.
+//!
+//! Heavily inspired by [this article](https://www.figma.com/blog/realtime-editing-of-ordered-sequences/).
+//!
+//! ## Why 95?
+//!
+//! - UTF-8, the most popular Unicode encoding scheme, can encode ASCII as is. (1 byte per character)
+//! - ASCII has 95 printable characters in total, from space to tilde.
+//!
+//! ## Example
+//!
+//! ```
+//! use base95::Base95;
+//! use std::str::FromStr;
+//!
+//! let n1 = Base95::mid();
+//! assert_eq!(n1.to_string(), "O");
+//! assert_eq!(n1.raw_digits(), vec![47]);
+//!
+//! let n2 = Base95::avg_with_zero(&n1);
+//! assert_eq!(n2.to_string(), "7");
+//! assert_eq!(n2.raw_digits(), vec![23]);
+//!
+//! let n3 = Base95::avg_with_one(&n1);
+//! assert_eq!(n3.to_string(), "g");
+//! assert_eq!(n3.raw_digits(), vec![71]);
+//!
+//! let n4 = Base95::avg(&n1, &n2);
+//! assert_eq!(n4.to_string(), "C");
+//! assert_eq!(n4.raw_digits(), vec![35]);
+//!
+//! let n5 = Base95::from_str("j>Z= 4").unwrap();
+//! assert_eq!(n5.raw_digits(), vec![74, 30, 58, 29, 0, 20]);
+//! ```
+//!
+//! ## Why is `avg` imprecise?
+//!
+//! One of main considerations of this representation is storage efficiency of fractional index.
+//! So it is better to have a little imprecise, shorter string, than perfectly precise, longer string.
+//!
+//! Of course, the result is deterministic, i.e., if the input is same, the output will always be same.
+
+mod digits;
 
 use crate::digits::Digits;
 
+const ASCII_MIN: u8 = 32; // space
+
 #[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq)]
 pub struct Base95(String);
-
-const ASCII_MIN: u8 = 32; // space
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum ParseError {
@@ -28,6 +74,10 @@ impl Base95 {
 
     pub fn avg_with_one(n: &Self) -> Self {
         Digits::avg(&Digits::one(), &n.into()).into()
+    }
+
+    pub fn raw_digits(&self) -> Vec<u8> {
+        Digits::from(self).0
     }
 }
 
