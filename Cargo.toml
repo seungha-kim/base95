@@ -10,7 +10,5 @@ categories = ["mathematics", "encoding"]
 readme = "README.md"
 documentation = "https://docs.rs/base95/"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dev-dependencies]
 rand = "0.8.3"
