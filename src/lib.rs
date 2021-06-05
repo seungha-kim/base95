@@ -63,6 +63,12 @@ impl From<&Base95> for Digits {
     }
 }
 
+impl From<Base95> for String {
+    fn from(base95: Base95) -> Self {
+        base95.0
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
