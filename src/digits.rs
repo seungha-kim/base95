@@ -1,22 +1,13 @@
-pub const BASE: u8 = 95;
+const BASE: u8 = 95;
 const MID: u8 = BASE / 2;
 
-#[derive(Debug)]
-pub enum DigitsError {
-    Overflowed,
-}
-
 #[derive(Debug, Clone, Ord, PartialOrd, Eq, PartialEq)]
-pub struct Digits(pub(crate) Vec<u8>);
+pub(crate) struct Digits(pub(crate) Vec<u8>);
 
 /// represents rational number of base 95 between 0 and 1. leading "0." is omitted.
 impl Digits {
-    pub fn new() -> Self {
+    pub fn mid() -> Self {
         Self(vec![MID])
-    }
-
-    pub fn with_raw_digits<T: AsRef<[u8]>>(ds: T) -> Self {
-        Digits(ds.as_ref().to_vec())
     }
 
     pub fn avg(lhs: &Self, rhs: &Self) -> Self {

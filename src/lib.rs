@@ -13,8 +13,8 @@ pub enum ParseError {
 }
 
 impl Base95 {
-    pub fn new() -> Self {
-        Digits::new().into()
+    pub fn mid() -> Self {
+        Digits::mid().into()
     }
 
     pub fn avg(lhs: &Self, rhs: &Self) -> Self {

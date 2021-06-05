@@ -2,7 +2,7 @@ use base95::Base95;
 use rand::prelude::*;
 
 fn main() {
-    let mut v = vec![Base95::new()];
+    let mut v = vec![Base95::mid()];
     let mut rng = thread_rng();
 
     for _ in 0..1000 {
