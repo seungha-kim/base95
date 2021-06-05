@@ -60,6 +60,8 @@ pub enum ParseError {
 }
 
 impl Base95 {
+    /// Create a fractional number of base 95, which represents `47 / 95`.
+    /// The only way to create Base95 instance without any arguments.
     pub fn mid() -> Self {
         Digits::mid().into()
     }
