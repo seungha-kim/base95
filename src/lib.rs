@@ -7,9 +7,10 @@ pub struct Base95(String);
 
 const ASCII_MIN: u8 = 32; // space
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum ParseError {
     InvalidChar,
+    EmptyNotAllowed,
 }
 
 impl Base95 {
@@ -40,10 +41,12 @@ impl std::str::FromStr for Base95 {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.chars().all(|c| c.is_ascii() && !c.is_ascii_control()) {
-            Ok(Base95(s.to_owned()))
-        } else {
+        if s.is_empty() {
+            Err(ParseError::EmptyNotAllowed)
+        } else if s.chars().any(|c| !c.is_ascii() || c.is_ascii_control()) {
             Err(ParseError::InvalidChar)
+        } else {
+            Ok(Base95(s.to_owned()))
         }
     }
 }
@@ -57,5 +60,18 @@ impl From<Digits> for Base95 {
 impl From<&Base95> for Digits {
     fn from(base95: &Base95) -> Self {
         Self(base95.0.as_bytes().iter().map(|x| x - ASCII_MIN).collect())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::str::FromStr;
+
+    #[test]
+    fn it_works() {
+        assert_eq!(Base95::from_str(""), Err(ParseError::EmptyNotAllowed));
+        assert_eq!(Base95::from_str("한글"), Err(ParseError::InvalidChar));
+        assert_eq!(Base95::from_str("O").unwrap(), Base95::mid());
     }
 }

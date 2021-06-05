@@ -105,13 +105,23 @@ mod tests {
     #[test]
     fn naive_add() {
         assert_eq!(
+            Digits::naive_add(&Digits(vec![]), &Digits(vec![])),
+            Digits(vec![])
+        );
+
+        assert_eq!(
+            Digits::naive_add(&Digits(vec![]), &Digits(vec![1])),
+            Digits(vec![1])
+        );
+
+        assert_eq!(
             Digits::naive_add(&Digits(vec![1]), &Digits(vec![1])),
             Digits(vec![2])
         );
 
         assert_eq!(
-            Digits::naive_add(&Digits(vec![0, 47]), &Digits(vec![0, 48])),
-            Digits(vec![0, 95])
+            Digits::naive_add(&Digits(vec![0, 50]), &Digits(vec![0, 50])),
+            Digits(vec![0, 100])
         );
 
         assert_eq!(
