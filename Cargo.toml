@@ -7,6 +7,8 @@ license = "MIT"
 description = "Textual representation of base 95 fractional numbers with arbitrary precision"
 repository = "https://github.com/seungha-kim/base95"
 categories = ["mathematics", "encoding"]
+readme = "README.md"
+documentation = "https://docs.rs/base95/"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
